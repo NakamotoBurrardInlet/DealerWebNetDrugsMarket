@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVERYBODY BUT MYSELF | Premium Substances</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --nova-orange: #ff4500;
+            --seal-teal: #004d4d;
+            --lime-life: #32cd32;
+            --deep-bg: #020a0a;
+        }
+
+        body {
+            background-color: var(--deep-bg);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* MATHEMATICAL VORTEX BACKGROUND */
+        .vortex {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, var(--seal-teal) 0%, transparent 70%),
+                        repeating-conic-gradient(from 0deg, #000 0deg 10deg, var(--nova-orange) 11deg 12deg);
+            opacity: 0.1;
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: hue-rotate(0deg); }
+            100% { transform: scale(1.1); filter: hue-rotate(15deg); }
+        }
+
+        .glass-panel {
+            background: rgba(0, 77, 77, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(50, 205, 50, 0.3);
+            border-radius: 15px;
+        }
+
+        .btn-action {
+            background: linear-gradient(45deg, var(--seal-teal), var(--lime-life));
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(50, 205, 50, 0.4);
+        }
+
+        /* CART ANIMATION */
+        .cart-badge {
+            background: var(--nova-orange);
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+    </style>
+</head>
+<body>
+    <div class="vortex"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="p-6 flex justify-between items-center glass-panel sticky top-0 z-50 m-4">
+        <div class="text-2xl font-bold tracking-tighter" style="color: var(--lime-life)">EVERYBODY BUT MYSELF</div>
+        <div class="flex gap-6 items-center">
+            <span class="text-sm italic text-gray-400">"STAY HYDRATED • DRINK WATER"</span>
+            <button onclick="toggleCart()" class="relative p-2 border border-teal-500 rounded-full">
+                🛒 <span id="cart-count" class="absolute -top-2 -right-2 text-xs px-2 py-1 rounded-full cart-badge">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <main class="max-w-6xl mx-auto p-8">
+        <div class="text-center mb-16">
+            <h1 class="text-6xl font-black mb-4" style="color: var(--nova-orange)">DESTINY'S DESIGN</h1>
+            <p class="text-xl max-w-2xl mx-auto text-gray-300">
+                The ultimate mathematical solution for premium substance and the premium supply. High-authority distribution, 
+                designed for those who value privacy and precision.
+            </p>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+            <!-- Product Item -->
+            <script>
+                const products = [
+                    { id: 'm1', name: 'White Mineral Coke', price: 50, unit: '0.5g', color: 'var(--lime-life)' },
+                    { id: 'm2', name: 'Computated Crystal Ms', price: 10, unit: '0.5g', color: 'var(--nova-orange)' },
+                    { id: 'm3', name: 'Sky High Crack Synthetic', price: 10, unit: '0.1g', color: 'var(--seal-teal)' },
+                    { id: 'm4', name: 'Forest Spore Shroom', price: 10, unit: 'Gram', color: '#fff' }
+                ];
+
+                document.write(products.map(p => `
+                    <div class="glass-panel p-6 flex flex-col justify-between h-80">
+                        <div>
+                            <div class="h-2 w-12 mb-4" style="background: ${p.color}"></div>
+                            <h3 class="text-xl font-bold mb-2">${p.name}</h3>
+                            <p class="text-sm text-gray-400 mb-4 font-mono">Precision Grade: AAAA+</p>
+                            <div class="text-2xl font-black" style="color: var(--lime-life)">$${p.price} <span class="text-xs text-white">/ ${p.unit}</span></div>
+                        </div>
+                        <button onclick="addToCart('${p.id}', '${p.name}', ${p.price})" class="btn-action py-3 rounded text-sm font-bold mt-4 uppercase">Secure Addition</button>
+                    </div>
+                `).join(''));
+            </script>
+        </div>
+
+        <!-- MASKED CONTACT -->
+        <div class="glass-panel p-12 text-center mb-20 border-dashed border-2 border-orange-500">
+            <h2 class="text-3xl font-bold mb-6">URGENT DISPATCH SERVICE</h2>
+            <p class="mb-8 text-gray-400 italic">Encrypted Connection Ready. One-Click Dialing Masked for Safety.</p>
+            <button onclick="callService()" class="bg-orange-600 hover:bg-orange-500 text-white px-10 py-5 rounded-full text-2xl font-black shadow-2xl transition-all">
+                INITIATE "CALL NOW" SEQUENCE
+            </button>
+        </div>
+    </main>
+
+    <!-- ORDER / CART MODAL -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-2xl p-8 max-h-[90vh] overflow-y-auto border-2 border-teal-500">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold" style="color: var(--nova-orange)">CONSOLIDATED ORDER</h2>
+                <button onclick="toggleCart()" class="text-4xl text-white">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="space-y-4 mb-8">
+                <!-- Items injected here -->
+            </div>
+
+            <div class="border-t border-teal-800 pt-4 mb-8">
+                <div class="flex justify-between text-2xl font-bold">
+                    <span>TOTAL RESOLUTION:</span>
+                    <span id="cart-total" style="color: var(--lime-life)">$0.00</span>
+                </div>
+            </div>
+
+            <!-- CHECKOUT FORM -->
+            <form id="order-form" onsubmit="handleOrder(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="Contact Email/Alias" class="bg-black border border-teal-900 p-4 rounded text-white" required>
+                    <input type="text" placeholder="Drop Location / Intersection" class="bg-black border border-teal-900 p-4 rounded text-white" required>
+                </div>
+                <select class="w-full bg-black border border-teal-900 p-4 rounded text-white">
+                    <option>Meet Up: Central Station Area</option>
+                    <option>Meet Up: Terminal Station Area</option>
+                    <option>Mailed (Parcel Tracking)</option>
+                </select>
+                <div class="bg-teal-950 p-4 rounded text-xs text-teal-300">
+                    NOTE: Verification will be sent to your provided contact. Payments accepted in BTC, ETH, or discreet cash-on-arrival.
+                </div>
+                <button type="submit" class="w-full py-6 text-2xl font-black rounded btn-action">FINALIZE DESTINY</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        const CART_KEY = 'eb_myself_cart';
+
+        function addToCart(id, name, price) {
+            cart.push({ id, name, price });
+            updateUI();
+            const badge = document.getElementById('cart-count');
+            badge.classList.remove('cart-badge');
+            void badge.offsetWidth; // Trigger reflow
+            badge.classList.add('cart-badge');
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-gray-500">Cart is empty. Select your fortune.</div>`;
+                totalEl.innerText = "$0.00";
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+                <div class="flex justify-between items-center bg-black bg-opacity-40 p-4 rounded border border-teal-900">
+                    <div>
+                        <div class="font-bold">${item.name}</div>
+                        <div class="text-xs text-gray-500 italic">Grade Secured</div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-lime-400 font-mono">$${item.price.toFixed(2)}</span>
+                        <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-400">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            totalEl.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateUI();
+            renderCart();
+        }
+
+        function updateUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        function callService() {
+            // Secret masking - pieces are never stored as a full string
+            const p1 = "1236";
+            const p2 = "234";
+            const p3 = "4205";
+            window.location.href = `tel:${p1}${p2}${p3}`;
+        }
+
+        function handleOrder(e) {
+            e.preventDefault();
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            alert(`ORDER CONFIGURED\nTotal: $${total.toFixed(2)}\n\nSubmitting encrypted request to dispatch... Check your contact for confirmation.`);
+            cart = [];
+            updateUI();
+            toggleCart();
+        }
+    </script>
+</body>
+</html>
